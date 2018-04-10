@@ -20,9 +20,11 @@ require_once './classes/DbClass.php';
             
             <?php
             $data = [];
-            $data['city'] = 'Pirna';
-            $data['province'] = 'Sachsen';
-            $data['country'] = 'Duetchland';
+//            $data['city'] = 'Pirna';
+//            $data['province'] = 'Sachsen';
+//            $data['country'] = 'Duetchland';
+            $data['iso2'] = 'SA';
+//            $data['iso3'] = 'SAC';
             
             
             
@@ -37,7 +39,10 @@ require_once './classes/DbClass.php';
             $rows = $db->getAllData();
 //            $deleted = $db->deletById(14572, 'cityid');
 //            echo $db->getTableName();
-            $db->insert($data);
+//            $db->insert($data);
+//            $db->update($data, 10); // WHERE id=10
+            $db->update($data, 'Pirna', 'city'); // WHERE id=10
+//             $db->update($data, 'Pirna', 'city'); // WHERE city='Pirna'
             ?>
             
         </div>

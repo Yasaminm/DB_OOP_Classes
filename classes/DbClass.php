@@ -59,5 +59,24 @@ class DbClass extends PDO {
         var_dump($result);
     }
     
+    public function update($data, $val, $column = 'id') {
+         $sets = [];
+         $i = 0;
+         foreach ($data as $col => $value) {
+          $sets[] = "$col=?";
+          }
+               $query = sprintf("UPDATE %s SET %s WHERE %s='%s'", 
+                       $this->tableName, implode(',', $sets), $column, $val);
+             echo 'show how it looks: '.$query;
+              
+       $stm = $this->prepare($query);
+        
+        foreach ($data as $value ) {
+            $stm->bindValue(++$i, $value);
+        }
+        $result = $stm->execute();
+        var_dump($result);
+    }
+    
     
    }
