@@ -16,14 +16,16 @@ class DbClass extends PDO {
         //return
     }
 
-    public function deletById(int $id) {
-        $query = "DELETE FROM $this->tableName WHERE id=:id";
+    public function deletById(int $id, $colName = 'id') {
+       $query = "DELETE FROM $this->tableName WHERE $colName=:id";
         try {
             $stm = $this->prepare($query);
             $stm->bindValue(':id', $id, self::PARAM_INT);
-            $stm->execute();
-        } catch (PDOException $exc) {
-//            echo $exc->getMessage();
+//            throw new Exception('Your selected Column as hint of deletion dose not exist');
+            return $stm->execute();
+        } catch (Exception $exc) {
+            echo 'ERROR: deletById '. $exc->getMessage();
+            exit();
         }
     }
 
@@ -34,5 +36,5 @@ class DbClass extends PDO {
     public function getTableName() {
         return $this->tableName;
     }
-
-}
+    
+   }

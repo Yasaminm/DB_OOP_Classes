@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <?php
+require_once './config.php';
 require_once './classes/DbClass.php';
 ?>
 <html>
@@ -18,11 +19,16 @@ require_once './classes/DbClass.php';
         <div class="container">
             
             <?php
-            require_once './config.php';
+            try {
             $db = new DbClass('mysql:host=' . HOST . ';dbname=' . DB, USER, PASSWORD);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $exc) {
+                echo $exc->getCode();
+            }
+
             $db->setTableName('tb_cities');
             $rows = $db->getAllData();
-            $deleted = $db->deletById(14572);
+            $deleted = $db->deletById(14572, 'cityid');
 //            echo $db->getTableName();
             ?>
             
@@ -34,7 +40,7 @@ require_once './classes/DbClass.php';
         <pre>
 <?php
 //var_dump($rows[0]);
-var_dump($deleted);
+//var_dump($deleted);
 ?>
         </pre>
         
