@@ -37,4 +37,27 @@ class DbClass extends PDO {
         return $this->tableName;
     }
     
+    
+     public function insert($data) {
+         
+         $cols = [];
+         $vals = [];
+         $i = 0;
+         foreach ($data as $col => $value) {
+          $cols[] = $col;
+          $vals[] = '?';
+          }
+        $query = sprintf("INSERT INTO %s (%s) VALUES (%s)", $this->tableName, implode(',', $cols), implode(',', $vals));
+//             echo 'show how it looks: '.$query;
+       
+        $stm = $this->prepare($query);
+        
+        foreach ($data as $value ) {
+            $stm->bindValue(++$i, $value);
+        }
+        $result = $stm->execute();
+        var_dump($result);
+    }
+    
+    
    }

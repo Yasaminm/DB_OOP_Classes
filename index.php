@@ -19,6 +19,13 @@ require_once './classes/DbClass.php';
         <div class="container">
             
             <?php
+            $data = [];
+            $data['city'] = 'Pirna';
+            $data['province'] = 'Sachsen';
+            $data['country'] = 'Duetchland';
+            
+            
+            
             try {
             $db = new DbClass('mysql:host=' . HOST . ';dbname=' . DB, USER, PASSWORD);
             $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -28,8 +35,9 @@ require_once './classes/DbClass.php';
 
             $db->setTableName('tb_cities');
             $rows = $db->getAllData();
-            $deleted = $db->deletById(14572, 'cityid');
+//            $deleted = $db->deletById(14572, 'cityid');
 //            echo $db->getTableName();
+            $db->insert($data);
             ?>
             
         </div>
