@@ -2,6 +2,7 @@
 <?php
 require_once './config.php';
 require_once './classes/DbClass.php';
+require_once './classes/FilterForm.php';
 ?>
 <?php
 //filter
@@ -41,73 +42,19 @@ $scheme = [
     ],
 [
         'fieldname' => 'field_population',
-        'columname' => 'population',
+        'columname' => 'pop',
         'filter' => FILTER_VALIDATE_INT
     ],
     
 ];
 
-function filterForm($scheme) {
-    /////////// 1 Varient
-//data Array erstellen 
-$data = [];
-//Schleife mit $scheme
-    foreach ($scheme as $key => $value) { //$value = $scheme[$key]
-        $val = filter_input(0, $value['fieldname'], $value['filter']);
-        $data[$value['columname']] = $val;
-    }
-    return $data;
- //$val = filter_input
- //Data Array einfügen  $data['city'] = $val;
- //Schleife ende 
- //return $data
-    
-    
-//  /////2 varient
-//    $data = [];
-//    foreach ($scheme as $item) {
-//        $val = filter_input(0, $item['fieldname'], $item['filter']);
-//        $data[$item['columname']] = $val;
-//    }
-//    return $data;
-}
-
- $data = filterForm($scheme);
- var_dump($data);
-
-//$filter = new FILTR();
-//$filter->setFilter('field_population',FILTER_VALIDATE_INT,'population');
-//
-//$data = $filter->filter(INPUT_POST);
+$f = new FilterForm();
+$f->setFilter('field_city',513,'city');
+$f->setFilter('field_population',FILTER_VALIDATE_INT,'pop');
+$s = $f->getScheme();
+$d = $f->filter(INPUT_POST);
 ?>
 
-?>
-<?php
-//daten bank
-  $data = [];
-//            $data['city'] = 'Pirna';
-//            $data['province'] = 'Sachsen';
-//            $data['country'] = 'Duetchland';
-            $data['iso2'] = 'SA';
-//            $data['iso3'] = 'SAC';
-     
-
-try {
-            $db = new DbClass('mysql:host=' . HOST . ';dbname=' . DB, USER, PASSWORD);
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch (PDOException $exc) {
-                echo $exc->getCode();
-            }
-
-            $db->setTableName('tb_cities');
-//            $rows = $db->getAllData();
-//            $deleted = $db->deletById(14572, 'cityid');
-//            echo $db->getTableName();
-//            $db->insert($data);
-//            $db->update($data, 10); // WHERE id=10
-//            $db->update($data, 'Pirna', 'city'); // WHERE id=10
-//             $db->update($data, 'Pirna', 'city'); // WHERE city='Pirna'
-?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -155,8 +102,34 @@ try {
         </div>
         <pre>
 <?php
+//daten bank
+//  $data = [];
+//            $data['city'] = 'Pirna';
+//            $data['province'] = 'Sachsen';
+//            $data['country'] = 'Duetchland';
+//            $data['iso2'] = 'SA';
+//            $data['iso3'] = 'SAC';
+     
+
+try {
+            $db = new DbClass('mysql:host=' . HOST . ';dbname=' . DB, USER, PASSWORD);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $exc) {
+                echo $exc->getCode();
+            }
+
+            $db->setTableName('tb_cities');
+//            $rows = $db->getAllData();
+//            $deleted = $db->deletById(14572, 'cityid');
+//            echo $db->getTableName();
+//            $db->insert($data);
+//            $db->update($data, 10); // WHERE id=10
+//            $db->update($data, 'Pirna', 'city'); // WHERE id=10
+//             $db->update($data, 'Pirna', 'city'); // WHERE city='Pirna'
+?>
+<?php
 //var_dump($rows[0]);
-//var_dump($deleted);
+var_dump($d);
 ?>
         </pre>
         
