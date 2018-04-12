@@ -6,10 +6,10 @@ require_once './classes/FilterForm.php';
 ?>
 <?php
 //filter
-$field_city = filter_input(INPUT_POST, 'field_city', 513);
-$field_city_ascii = filter_input(INPUT_POST, 'field_city_ascii', 513);
-$field_province = filter_input(INPUT_POST, 'field_province', 513);
-$field_population = filter_input(INPUT_POST, 'field_population', FILTER_VALIDATE_INT);
+//$field_city = filter_input(INPUT_POST, 'field_city', 513);
+//$field_city_ascii = filter_input(INPUT_POST, 'field_city_ascii', 513);
+//$field_province = filter_input(INPUT_POST, 'field_province', 513);
+//$field_population = filter_input(INPUT_POST, 'field_population', FILTER_VALIDATE_INT);
 
 //what do we need to pass the values in DB
 //Name des input Feldes
@@ -24,37 +24,68 @@ $field_population = filter_input(INPUT_POST, 'field_population', FILTER_VALIDATE
 //$scheme[0]['filter'] = 513;
 
 //////Schema second Varient
-$scheme = [
-    [
-        'fieldname' => 'field_city',
-        'columname' => 'city',
-        'filter' => 513
-    ],
-[
-        'fieldname' => 'field_city_ascii',
-        'columname' => 'city_ascii',
-        'filter' => 513
-    ],
-[
-        'fieldname' => 'field_province',
-        'columname' => 'province',
-        'filter' => 513
-    ],
-[
-        'fieldname' => 'field_population',
-        'columname' => 'pop',
-        'filter' => FILTER_VALIDATE_INT
-    ],
-    
-];
+//$scheme = [
+//    [
+//        'fieldname' => 'field_city',
+//        'columname' => 'city',
+//        'filter' => 513
+//    ],
+//[
+//        'fieldname' => 'field_city_ascii',
+//        'columname' => 'city_ascii',
+//        'filter' => 513
+//    ],
+//[
+//        'fieldname' => 'field_province',
+//        'columname' => 'province',
+//        'filter' => 513
+//    ],
+//[
+//        'fieldname' => 'field_population',
+//        'columname' => 'pop',
+//        'filter' => FILTER_VALIDATE_INT
+//    ],
+//    
+//];
 
 $f = new FilterForm();
 $f->setFilter('field_city',513,'city');
+$f->setFilter('field_city_ascii',513,'city_ascii');
+$f->setFilter('field_province',513,'province');
 $f->setFilter('field_population',FILTER_VALIDATE_INT,'pop');
 $s = $f->getScheme();
-$d = $f->filter(INPUT_POST);
+$formData = $f->filter(INPUT_POST);
 ?>
+<?php
+//daten bank
+//  $data = [];
+//            $data['city'] = 'Pirna';
+//            $data['province'] = 'Sachsen';
+//            $data['country'] = 'Duetchland';
+//            $data['iso2'] = 'SA';
+//            $data['iso3'] = 'SAC';
+     
 
+try {   //DB connection:
+            $db = new DbClass('mysql:host=' . HOST . ';dbname=' . DB, USER, PASSWORD);
+            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+            } catch (PDOException $exc) {
+                echo $exc->getCode();
+            }
+
+            $db->setTableName('tb_cities');
+//            $rows = $db->getAllData();
+            $db->delete(14652);
+//            echo $db->getTableName();
+////            
+//            if (count($formData) === 4) {
+//            $db->insert($formData);
+//            }
+////            
+//            $db->update($data, 10); // WHERE id=10
+//            $db->update($data, 'Pirna', 'city'); // WHERE id=10
+//             $db->update($data, 'Pirna', 'city'); // WHERE city='Pirna'
+?>
 <html>
     <head>
         <meta charset="UTF-8">
@@ -101,35 +132,10 @@ $d = $f->filter(INPUT_POST);
             
         </div>
         <pre>
-<?php
-//daten bank
-//  $data = [];
-//            $data['city'] = 'Pirna';
-//            $data['province'] = 'Sachsen';
-//            $data['country'] = 'Duetchland';
-//            $data['iso2'] = 'SA';
-//            $data['iso3'] = 'SAC';
-     
 
-try {
-            $db = new DbClass('mysql:host=' . HOST . ';dbname=' . DB, USER, PASSWORD);
-            $db->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-            } catch (PDOException $exc) {
-                echo $exc->getCode();
-            }
-
-            $db->setTableName('tb_cities');
-//            $rows = $db->getAllData();
-//            $deleted = $db->deletById(14572, 'cityid');
-//            echo $db->getTableName();
-//            $db->insert($data);
-//            $db->update($data, 10); // WHERE id=10
-//            $db->update($data, 'Pirna', 'city'); // WHERE id=10
-//             $db->update($data, 'Pirna', 'city'); // WHERE city='Pirna'
-?>
 <?php
 //var_dump($rows[0]);
-var_dump($d);
+var_dump($formData);
 ?>
         </pre>
         
